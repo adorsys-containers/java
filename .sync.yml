@@ -2,10 +2,12 @@
   checkoutTestApplications: true
   env:
     - DOCKER_IMAGE: adorsys/java
-      TAG: 10
-      DIR: ubi/10
+      TAG: 8-ubi
+      DIR: ubi/8
       SQUASH: 'true'
+      ALIASES: '8'
     - DOCKER_IMAGE: adorsys/java
-      TAG: 12
-      DIR: ubi/12
+      TAG: 11-ubi
+      DIR: ubi/11
       SQUASH: 'true'
+      ALIASES: '11'
