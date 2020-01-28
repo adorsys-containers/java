@@ -1,0 +1,11 @@
+.github/workflows/ci.yaml:
+  checkoutTestApplications: true
+  env:
+    - DOCKER_IMAGE: adorsys/java
+      TAG: 10
+      DIR: ubi/10
+      SQUASH: 'true'
+    - DOCKER_IMAGE: adorsys/java
+      TAG: 12
+      DIR: ubi/12
+      SQUASH: 'true'
