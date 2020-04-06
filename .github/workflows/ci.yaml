@@ -34,13 +34,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        if: matrix.env.SQUASH
+        with:
+          node-version: '3.x'
 
       - name: docker info
         run: docker info
 
       - name: Install dependencies
         run: |
-          npm install dockerfilelint
+          npm install -g dockerfilelint
           curl -sL https://github.com/gdraheim/docker-copyedit/archive/v1.2.2036.tar.gz | tar xzf -  --wildcards --strip-components=1 */docker-copyedit.py
         working-directory: ${{ matrix.env.DIR }}
 
@@ -72,7 +76,7 @@ jobs:
         if: matrix.env.SQUASH
         env: ${{ matrix.env }}
         run: |
-          pip3 install setuptools wheel docker-squash
+          pip3 install wheel docker-squash
           docker tag "${DOCKER_IMAGE}:${TAG}" "${DOCKER_IMAGE}:presquashed"
           docker-squash -t "${DOCKER_IMAGE}:squashed" "${DOCKER_IMAGE}:${TAG}"
           docker tag "${DOCKER_IMAGE}:squashed" "${DOCKER_IMAGE}:${TAG}"
