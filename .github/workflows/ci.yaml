@@ -72,7 +72,7 @@ jobs:
         if: matrix.env.SQUASH
         env: ${{ matrix.env }}
         run: |
-          pip3 install wheel docker-squash
+          pip3 install setuptools wheel docker-squash
           docker tag "${DOCKER_IMAGE}:${TAG}" "${DOCKER_IMAGE}:presquashed"
           docker-squash -t "${DOCKER_IMAGE}:squashed" "${DOCKER_IMAGE}:${TAG}"
           docker tag "${DOCKER_IMAGE}:squashed" "${DOCKER_IMAGE}:${TAG}"
