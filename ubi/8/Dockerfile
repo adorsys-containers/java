@@ -1,6 +1,6 @@
 FROM registry.access.redhat.com/ubi8/ubi:latest AS TZDATA
 
-FROM registry.access.redhat.com/ubi8/ubi-minimal:latest AS TCNATIVE
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.1-407 AS TCNATIVE
 
 RUN microdnf install -y apr-devel openssl-devel java-1.8.0-openjdk-devel tar gzip gcc make redhat-rpm-config
 
@@ -17,7 +17,7 @@ RUN set -x \
               --prefix=/usr \
     && make && make install
 
-FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.1-407
 
 LABEL maintainer="adorsys GmbH & Co. KG" \
       vendor="adorsys GmbH & Co. KG" \
