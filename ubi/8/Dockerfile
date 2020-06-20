@@ -49,10 +49,6 @@ COPY --from=TZDATA /usr/share/zoneinfo/Europe/Berlin /usr/share/zoneinfo/Europe/
 
 COPY --from=TCNATIVE /usr/lib/libtcnative*so /usr/lib/
 
-# Workaround for
-# https://github.com/rpm-software-management/microdnf/issues/50
-RUN mkdir -p /run/user/$(id -u)
-
 RUN microdnf update -y && microdnf clean all && rm -rf /var/cache/yum \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && microdnf install --nodocs -y openssl java-1.8.0-openjdk-headless apr && microdnf clean all \
