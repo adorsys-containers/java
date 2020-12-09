@@ -2,7 +2,7 @@ FROM registry.access.redhat.com/ubi8/ubi:latest AS TZDATA
 
 FROM registry.access.redhat.com/ubi8/ubi-minimal:latest AS TCNATIVE
 
-RUN microdnf install -y apr-devel openssl-devel java-11-openjdk-devel tar gzip gcc make redhat-rpm-config
+RUN microdnf --noplugins install -y apr-devel openssl-devel java-11-openjdk-devel tar gzip gcc make redhat-rpm-config
 
 RUN set -x \
     # https://github.com/infosiftr/tomcat/blob/5f1abae99c0b1ebbd4f020bc4b5696619d948cfd/7/jre8-alpine/Dockerfile
@@ -49,9 +49,9 @@ COPY --from=TZDATA /usr/share/zoneinfo/Europe/Berlin /usr/share/zoneinfo/Europe/
 
 COPY --from=TCNATIVE /usr/lib/libtcnative*so /usr/lib/
 
-RUN microdnf update -y && microdnf clean all && rm -rf /var/cache/yum \
+RUN microdnf --noplugins update -y && microdnf --noplugins clean all && rm -rf /var/cache/yum \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
-    && microdnf install --nodocs -y openssl java-11-openjdk-headless apr && microdnf clean all \
+    && microdnf --noplugins install --nodocs -y openssl java-11-openjdk-headless apr && microdnf --noplugins clean all \
     && chmod g=u /etc/passwd
 
 COPY root /
