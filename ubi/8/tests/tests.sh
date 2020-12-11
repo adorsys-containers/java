@@ -11,7 +11,7 @@ docker run --rm "${DOCKER_IMAGE}:${TAG}" bash -c 'ldd /usr/lib/libtcnative-1.so 
 
 docker run --rm -eSPRING_MAIN_BANNER-MODE=off -v "$(git rev-parse --show-toplevel)/test-applications/java/example-app/target/dockerhub-pipeline-images-test-jar.jar":/opt/app-root/src/app.jar "${DOCKER_IMAGE}:${TAG}"
 docker run --rm -eSPRING_MAIN_BANNER-MODE=off -e JAVA_OPTS="-Dspring.mandatory-file-encoding=UTF-8" -v "$(git rev-parse --show-toplevel)/test-applications/java/example-app/target/dockerhub-pipeline-images-test-jar.jar":/opt/app-root/src/app.jar "${DOCKER_IMAGE}:${TAG}"
-docker run --rm -eSPRING_MAIN_BANNER-MODE=off -v "$(git rev-parse --show-toplevel)/test-applications/java/example-app/target/dockerhub-pipeline-images-test-jar.jar":/opt/app-root/src/app.jar "${DOCKER_IMAGE}:${TAG}" | grep "Loaded APR based Apache Tomcat Native library"
+docker run --rm -eSPRING_MAIN_BANNER-MODE=off -v "$(git rev-parse --show-toplevel)/test-applications/java/example-app/target/dockerhub-pipeline-images-test-jar.jar":/opt/app-root/src/app.jar "${DOCKER_IMAGE}:${TAG}" | grep "Loaded Apache Tomcat Native library"
 
 # Test as Openshift UID
 docker run --rm -u 1000090000:0 "${DOCKER_IMAGE}:${TAG}" whoami
