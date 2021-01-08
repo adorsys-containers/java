@@ -1,22 +1,5 @@
 FROM registry.access.redhat.com/ubi8/ubi:latest AS TZDATA
 
-FROM registry.access.redhat.com/ubi8/ubi-minimal:latest AS TCNATIVE
-
-RUN microdnf --noplugins install -y apr-devel openssl-devel java-11-openjdk-devel tar gzip gcc make redhat-rpm-config
-
-RUN set -x \
-    # https://github.com/infosiftr/tomcat/blob/5f1abae99c0b1ebbd4f020bc4b5696619d948cfd/7/jre8-alpine/Dockerfile
-    && nativeBuildDir="$(mktemp -d)" \
-    && nativeVersion=$(curl -sSfL "https://downloads.apache.org/tomcat/tomcat-connectors/native/" | sed -nE 's/.*<a href="([0-9]+\.[0-9]+.[0-9]+)\/">.*/\1/p' | tail -n1) \
-    && curl -sSfL "https://downloads.apache.org/tomcat/tomcat-connectors/native/${nativeVersion}/source/tomcat-native-${nativeVersion}-src.tar.gz" | tar -zx -C "$nativeBuildDir" --strip-components=1 \
-    && export CATALINA_HOME="$PWD" \
-    && cd "$nativeBuildDir/native" \
-    && ./configure --with-apr=/usr/bin/apr-1-config \
-              --with-java-home=/usr/lib/jvm/java-openjdk  \
-              --with-ssl=yes \
-              --prefix=/usr \
-    && make && make install
-
 FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 
 LABEL maintainer="adorsys GmbH & Co. KG" \
@@ -47,11 +30,9 @@ WORKDIR /opt/app-root/src
 COPY --from=TZDATA /usr/share/zoneinfo/UTC /usr/share/zoneinfo/UTC
 COPY --from=TZDATA /usr/share/zoneinfo/Europe/Berlin /usr/share/zoneinfo/Europe/Berlin
 
-COPY --from=TCNATIVE /usr/lib/libtcnative*so /usr/lib/
-
 RUN microdnf --noplugins update -y && microdnf --noplugins clean all && rm -rf /var/cache/yum \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
-    && microdnf --noplugins install --nodocs -y openssl java-11-openjdk-headless apr && microdnf --noplugins clean all \
+    && microdnf --noplugins install --nodocs -y openssl java-11-openjdk-headless && microdnf --noplugins clean all \
     && chmod g=u /etc/passwd
 
 COPY root /
