@@ -10,3 +10,8 @@
       DIR: ubi/11
       SQUASH: 'true'
       ALIASES: '11'
+    - DOCKER_IMAGE: adorsys/java
+      TAG: 17-ubi
+      DIR: ubi/17
+      SQUASH: 'true'
+      ALIASES: '17'
