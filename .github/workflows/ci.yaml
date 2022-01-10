@@ -31,6 +31,12 @@ jobs:
             DOCKER_IMAGE: 'adorsys/java'
             SQUASH: 'true'
             TAG: '11-ubi'
+          -
+            ALIASES: '17'
+            DIR: 'ubi/17'
+            DOCKER_IMAGE: 'adorsys/java'
+            SQUASH: 'true'
+            TAG: '17-ubi'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
